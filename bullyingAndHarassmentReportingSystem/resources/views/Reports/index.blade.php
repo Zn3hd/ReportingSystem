@@ -1,24 +1,52 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-     <div> 
-        <h1>Reports</h1>
+  <head>
+    @include('admin.adminCss ')
 
+    <style>
+    .table-container {
+      overflow-x: auto;
+      max-height: 700px;
+      overflow-y: auto;
+      max-width: 1000px; /* Adjust the height according to your design */
+    }
+  </style>
+  </head>
+  <body>
+    
+   
+      <!-- partial:partials/_navbar.html -->
+    @include('admin.adminNavbar')
+      <!-- partial -->
+    @include('admin.adminSettings')
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+    @include('admin.adminSidebar')
+        <!-- partial -->
+   
+
+
+
+     <div> 
+   
          <div>
             @if(session()->has('success'))
           
             <div>
                 {{session('success')}}    
            </div>
-           <script>
-           @endif
-            <table border="1">
-         <tr>
+        @endif
+        <div class="table-container">
+      
+       
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Reports</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
             <th> id </th>
             <th> report_date_time </th>
             <th> incident_date_time </th>
@@ -39,12 +67,13 @@
             <th> Description </th>
             <th> physical_evidence </th>
             <th> file_upload </th>
-            <th> edit </th>
-            <th> delete </th>
-          
-         </tr>
-             @foreach($reports as $report)
-         <tr> 
+                <th> edit </th>
+                <th> delete </th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($reports as $report)
+                <tr> 
             <td>{{$report->id}}</td>
             <td>{{$report->report_date_time}}</td>
             <td>{{$report->incident_date_time}}</td>
@@ -65,21 +94,44 @@
             <td>{{$report->description}}</td>
             <td>{{$report->physical_evidence}}</td>
             <td>{{$report->file_upload}}</td>
-            <td>
-               <a href = "{{route('report.edit', ['report' => $report ]) }}"> Edit </a>
-            </td>
-            <td>
-            <form method="post" action="{{route('report.delete', ['report'=> $report])}}" >
-            @csrf 
-            @method('delete')
-            <input type="submit" value="Delete">
-            </form>
-            
-            </td>
-            
-         </tr>
-             @endforeach
-            </table>
-         </div>
-</body>
+                  <td>
+                    <a href="{{ route('report.edit', ['report' => $report]) }}">Edit</a>
+                  </td>
+                  <td>
+                    <form method="post" action="{{ route('report.delete', ['report'=> $report]) }}" >
+                      @csrf 
+                      @method('delete')
+                      <input type="submit" value="Delete">
+                    </form>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+ 
+
+
+
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+    @include('admin.adminFooter')
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+  
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    @include('admin.adminJs')
+    <!-- End custom js for this page-->
+  </body>
 </html>

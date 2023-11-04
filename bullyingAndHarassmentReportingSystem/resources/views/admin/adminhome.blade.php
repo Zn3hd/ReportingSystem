@@ -1,17 +1,38 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Dashboard') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in as an admin!") }}
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    @include('admin.adminCss ')
+  </head>
+  <body>
+    
+   
+      <!-- partial:partials/_navbar.html -->
+    @include('admin.adminNavbar')
+      <!-- partial -->
+    @include('admin.adminSettings')
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+    @include('admin.adminSidebar')
+        <!-- partial -->
+    @include('admin.adminBody')
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+    @include('admin.adminFooter')
+          <!-- partial -->
         </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
     </div>
-</x-app-layout>
+    <!-- container-scroller -->
+    <!-- base:js -->
+  
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    @include('admin.adminJs')
+    <!-- End custom js for this page-->
+  </body>
+</html>
