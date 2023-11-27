@@ -9,9 +9,11 @@
       overflow-x: auto;
       max-height: 700px;
       overflow-y: auto;
-      max-width: 1000px; /* Adjust the height according to your design */
-    }
-  </style>
+      max-width: 1300px; /* Adjust the height according to your design */
+     
+</style>
+
+ 
   </head>
   <body>
     
@@ -43,6 +45,15 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Reports</h4>
+
+        <form action="{{ route('report.index') }}" method="GET" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search by name or location" value="{{ $search }}">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+                        
         <div class="table-responsive">
           <table class="table table-hover">
             <thead>
@@ -60,6 +71,7 @@
             <th> arrested_relation </th>
             <th> name_of_victims </th>
             <th> bullying_type </th>
+            <th>status</th>
             <th> result_in_injury </th>
             <th> reported_to_nurse </th>
             <th> reported_to_police </th>
@@ -87,6 +99,8 @@
             <td>{{$report->arrested_relation}}</td>
             <td>{{$report->name_of_victims}}</td>
             <td>{{$report->bullying_type}}</td>
+            <td>{{$report->status}}</td>
+
             <td>{{$report->result_in_injury}}</td>
             <td>{{$report->reported_to_nurse}}</td>
             <td>{{$report->reported_to_police}}</td>
@@ -94,6 +108,7 @@
             <td>{{$report->description}}</td>
             <td>{{$report->physical_evidence}}</td>
             <td>{{$report->file_upload}}</td>
+           
                   <td>
                     <a href="{{ route('report.edit', ['report' => $report]) }}">Edit</a>
                   </td>
@@ -108,6 +123,7 @@
               @endforeach
             </tbody>
           </table>
+          {{ $reports->appends(['search' => $search])->links() }}
         </div>
       </div>
     </div>

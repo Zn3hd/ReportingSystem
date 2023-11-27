@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('report_date_time');
             $table->dateTime('incident_date_time');
             $table->string('first_name');
-            $table->string('middle_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->text('incident_location');
             $table->text('nature_of_incident');
@@ -32,7 +32,8 @@ return new class extends Migration
             $table->text('Description');
             $table->string('physical_evidence');
             $table->string('file_upload')->nullable(); // Assuming you store the file path
-            $table->timestamps();
+          $table->timestamps();
+          $table->enum('status', ['pending', 'verified', 'rejected'])->default('pending');
         });
     }
     /**
@@ -41,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('incident_reports');
+       
     }
 };

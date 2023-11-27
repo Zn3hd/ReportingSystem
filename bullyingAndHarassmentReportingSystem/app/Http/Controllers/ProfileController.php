@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Reports;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+
 
 class ProfileController extends Controller
 {
@@ -57,4 +58,23 @@ class ProfileController extends Controller
 
         return Redirect::to('/welcome')->with ('status', 'account-deleted');
     }
+   
+   
+    public function userProfile()
+{
+    try {
+        $user = auth()->user(); // Fetch the authenticated user
+
+        $reportSummary = Reports::select('status', \DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->get();
+
+        \Log::info('Report Summary: ' . print_r($reportSummary, true));
+
+        return view('user.userProfile', ['user' => $user, 'reportSummary' => $reportSummary]);
+    } catch (\Exception $e) {
+        \Log::error('Error fetching report summary: ' . $e->getMessage());
+        return view('user.userProfile', ['user' => null, 'reportSummary' => []]);
+    }
+}
 }

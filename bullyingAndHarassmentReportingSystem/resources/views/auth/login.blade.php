@@ -2,11 +2,82 @@
 <html lang="en">
 
 <head>
+<style>
+    body {
+      background-image: url("images/faces/snsu background image.png"); /* Replace 'path_to_your_image.jpg' with your image file path */
+      background-size: cover; 
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-size: 10rem;
+      font-weight: 1000;
+      line-height: 5;
+     color: #001737;
+  text-align: left;/* Adjust as needed */
+      /* Additional background properties if necessary */
+    }
+    .brand-logo {
+    
+      background-color: skyblue;
+      color: black;
+
+    }
+    .floating-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+    }
+    .my-2 {
+ 
+}
+
+.my-2 .form-check-label {
+  color: black;
+  margin-bottom: 0; /* Remove the default margin-bottom for label */
+}
+/* Style the default checkbox */
+.my-2 .form-check-input {
+  width: 16px; /* Adjust the size of the checkbox */
+  height: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 3px; /* Optional: Add border-radius for rounded corners */
+  outline: none; /* Remove the default focus outline */
+}
+
+/* Style the checkmark inside the custom checkbox */
+.my-2 .form-check-input:checked {
+  background-color: #2196F3; /* Background color when checked */
+  border-color: #2196F3; /* Border color when checked */
+}
+
+/* Hide the default checkmark */
+.my-2 .form-check-input:checked::before {
+  content: '';
+  display: block;
+  width: 12px; /* Adjust the size of the checkmark */
+  height: 6px;
+  border: solid #fff; /* Checkmark color */
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+ 
+
+  </style>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>CelestialUI Admin</title>
-  <!-- base:css -->
+  <title>SNSU bullying and harrassmen reprting system </title>
+  <!-- base:css --> 
   <link rel="stylesheet" href="../../vendors/typicons.font/font/typicons.css">
   <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
@@ -16,6 +87,7 @@
   <link rel="stylesheet" href="../../css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
+ 
 </head>
 
 <body>
@@ -24,11 +96,10 @@
       <div class="content-wrapper d-flex align-items-center auth px-0">
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">
+          <div class="floating-container">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div class="brand-logo">
-                <img src="../../images/logo.svg" alt="logo">
-              </div>
-              <h4>Hello! Let's get started</h4>
+             
+              <h2>Hello! Let's get started</h2>
               <h6 class="font-weight-light">Sign in to continue.</h6>
 
               <!-- Laravel Blade login form -->
@@ -60,13 +131,14 @@
                   </button>
                 </div>
                 <div class="text-center mt-4 font-weight-light">
-                  Don't have an account? <a href="register.html" class="text-primary">Create</a>
+                  Don't have an account? <a href="{{ route('register') }}" class="text-primary">Create</a>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+  </div>
       <!-- content-wrapper ends -->
     </div>
     <!-- page-body-wrapper ends -->

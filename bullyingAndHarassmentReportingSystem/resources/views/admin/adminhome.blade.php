@@ -3,19 +3,113 @@
 <html lang="en">
   <head>
     @include('admin.adminCss ')
+    <style>
+       
+
+body {
+  background-color: #f4f4f4;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+.content-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Set the height to 100% of the viewport height */
+        }
+ .form-scroll-container {
+            flex: 1; /* Make this container take the available space */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+.form-container {
+    
+           width: 80%;
+           max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        
+}
+
+h1 {
+  text-align: center;
+  color: #3498db;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.form-sample {
+  margin-top: 20px;
+}
+
+.form-label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+textarea,
+input[type="text"],
+input[type="datetime-local"],
+input[type="file"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #495057;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 25px; /* Increased border-radius for an oval shape */
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+
+  button:hover {
+  background-color: #007bb5;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 5px;
+}
+    </style>
   </head>
   <body>
     
    
       <!-- partial:partials/_navbar.html -->
+    
     @include('admin.adminNavbar')
       <!-- partial -->
     @include('admin.adminSettings')
         <!-- partial -->
         <!-- partial:partials/_sidebar.html -->
-    @include('admin.adminSidebar')
+        @include('admin.adminSidebar')
         <!-- partial -->
-    @include('admin.adminBody')
+ 
+		@include('admin.adminBody')
+
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
     @include('admin.adminFooter')

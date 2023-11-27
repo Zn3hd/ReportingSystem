@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class reports extends Model
-{ protected $fillable = [
+
+class Reports extends Model
+{ 
+    protected $fillable = [
     'report_date_time',
     'incident_date_time',
     'first_name',
@@ -26,6 +28,15 @@ class reports extends Model
     'Description',
     'physical_evidence',
     'file_upload',
-  
+    'user_id',
+    'status',
+    'admin_status',
+    'file_path',
+    
 ];
+public function user()
+{
+    return $this->belongsTo(User::class);
 }
+}
+

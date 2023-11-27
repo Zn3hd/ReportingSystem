@@ -8717,6 +8717,7 @@ body {
   color: #001737;
   text-align: left;
   background-color: #fff;
+  
 }
 
 [tabindex="-1"]:focus {
@@ -8919,6 +8920,7 @@ button,
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
+  appearance: button;
 }
 
 button:not(:disabled),
@@ -8947,6 +8949,7 @@ input[type="time"],
 input[type="datetime-local"],
 input[type="month"] {
   -webkit-appearance: listbox;
+  appearance: listbox;
 }
 
 textarea {
@@ -8985,6 +8988,7 @@ progress {
 [type="search"] {
   outline-offset: -2px;
   -webkit-appearance: none;
+  appearance: none;
 }
 
 [type="search"]::-webkit-search-decoration {
@@ -22851,6 +22855,7 @@ body.avgrund-active {
   width: 100px;
   margin-left: -50px;
   -webkit-transition: 0.1s left, 0.1s top;
+  transition: 0.1s left, 0.1s top;
 }
 
 .wysi-editor .wrap {
@@ -22902,12 +22907,17 @@ body.avgrund-active {
 }
 
 .auth .auth-form-light {
-  background: #ffffff;
-}
+  background: url('images/faces/snsu background image.png') rgba(255, 255, 255, 1.1);
+  background-size: cover; /* Adjust the size as needed */
+  background-repeat: no-repeat;
+  background-position: center; /* Center the background image */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px; /* Adjust the width as needed */
+  margin: auto;
+  color: #333;}
 
-.auth .auth-form-light select {
-  color: #7e7e7e;
-}
 
 .auth .auth-form-light .input-group .form-control:focus, .auth .auth-form-light .input-group .select2-container--default .select2-selection--single:focus, .select2-container--default .auth .auth-form-light .input-group .select2-selection--single:focus, .auth .auth-form-light .input-group .select2-container--default .select2-selection--single .select2-search__field:focus, .select2-container--default .select2-selection--single .auth .auth-form-light .input-group .select2-search__field:focus, .auth .auth-form-light .input-group .typeahead:focus,
 .auth .auth-form-light .input-group .tt-query:focus,
@@ -23104,7 +23114,8 @@ body.avgrund-active {
 }
 
 .content-wrapper {
-  background: #e8eff9;
+  background-image: url("images/faces/snsu background image.png"); /* Replace 'path_to_your_image.jpg' with your image file path */
+  background-size: cover; 
   padding: 1.875rem 1.875rem 0 1.875rem;
   width: 100%;
   -webkit-flex-grow: 1;
