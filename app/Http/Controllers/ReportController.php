@@ -65,7 +65,7 @@ class ReportController extends Controller
 }
 
     public function incidentReportForm() {
-        return view('reports.incidentReportForm');
+        return view('Reports.incidentReportForm');
     }
 
     public function store(Request $request)
