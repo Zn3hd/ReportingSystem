@@ -61,7 +61,7 @@ class ReportController extends Controller
         }
     })->paginate(8); // You can adjust the number of items per page as needed
 
-    return view('reports.index', compact('reports', 'search'));
+    return view('Reports.index', compact('reports', 'search'));
 }
 
     public function incidentReportForm() {
