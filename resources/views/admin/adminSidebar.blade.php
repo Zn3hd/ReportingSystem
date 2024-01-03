@@ -36,6 +36,7 @@
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="{{route('report.index')}}">Reports</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{route('admin.reportsTable')}}">Reports Table</a></li>
               </ul>
             </div>
           </li>
@@ -48,6 +49,11 @@
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{route('admin.overallReportSummary')}}">Overall Report Summary</a></li>
+              </ul>
+            </div>
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{route('admin.monthlyBullyingReport')}}">Monthly Reports</a></li>
               </ul>
             </div>
           </li>

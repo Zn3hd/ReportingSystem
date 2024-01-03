@@ -31,6 +31,7 @@
         <strong>Suspect Charges:</strong> {{ $report->suspect_charges }}<br>
         <strong>Arrested Relation:</strong> {{ $report->arrested_relation }}<br>
         <strong>Name of Victims:</strong> {{ $report->name_of_victims }}<br>
+        <strong>Name of Suspects:</strong> {{ $report->name_of_suspects }}<br>
         <strong>Bullying Type:</strong> {{ $report->bullying_type }}<br>
         <strong>Result in Injury:</strong> {{ $report->result_in_injury }}<br>
         <strong>Reported to Nurse:</strong> {{ $report->reported_to_nurse }}<br>

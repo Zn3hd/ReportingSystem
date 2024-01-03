@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reports extends Model
 { 
+    protected $table = 'reports';
     protected $fillable = [
     'report_date_time',
     'incident_date_time',
@@ -20,6 +21,7 @@ class Reports extends Model
     'suspect_charges',
     'arrested_relation',
     'name_of_victims',
+    'name_of_suspects',
     'bullying_type',
     'result_in_injury',
     'reported_to_nurse',

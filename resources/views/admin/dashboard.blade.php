@@ -102,6 +102,8 @@
 
 <main>
     <div class="dashboard">
+       
+
         <div class="report-container">
             <h2>Verified Reports</h2>
             @foreach ($verifiedReports as $report)
@@ -115,11 +117,9 @@
                 @include('_report-details', ['report' => $report])
             @endforeach
         </div>
-
     </div>
-   
+
     @include('admin.adminFooter')
-  
 </main>
 
    

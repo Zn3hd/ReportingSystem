@@ -1,0 +1,13 @@
+@startuml
+class User {
+  id
+  username
+  email
+}
+class Post {
+  id
+  title
+  content
+  user_id
+}
+@enduml

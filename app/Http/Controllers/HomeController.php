@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Reports;
 use Illuminate\Support\Facades\Auth;
+use App\Models\MonthlyReport;
+
 
 class HomeController extends Controller
 {public function index()
@@ -56,16 +58,15 @@ class HomeController extends Controller
 public function adminBody()
 {
     $totalUsers = User::count();
-
-    // Fetch user names and statuses
     $userStatuses = User::select('name', 'status')->get();
 
-    // Fetch other data or perform other logic for your dashboard
-
-    // Pass data to the view
+    // Fetch monthly reports
+    $monthlyReports = MonthlyReport::all(); // Modify this query based on your database structure
+    
     return view('admin.adminBody', [
         'totalUsers' => $totalUsers,
         'userStatuses' => $userStatuses,
+        'monthlyReports' => $monthlyReports,
         // Add other data as needed
     ]);
 }

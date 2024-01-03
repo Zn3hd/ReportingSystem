@@ -186,6 +186,9 @@ button {
 				<label for="txtName" class="form-label">Name of victim(s):</label>
 				<input id="txtName" name="name_of_victims" type="text" class="form-input"> </div>
 			<div class="form-group">
+				<label for="txtName" class="form-label">Name of suspect(s):</label>
+				<input id="txtName" name="name_of_suspects" type="text" class="form-input"> </div>
+			<div class="form-group">
 				<label class="form-label">Type of Bullying:</label>
 				<input name="bullying_type[]" type="checkbox" value="Physical" id="physicalBullying">
 				<label for="physicalBullying">Physical</label>

@@ -21,10 +21,10 @@
         }
 
         .table-content {
-            max-height: 450px; /* Set the maximum height for the scrollable area */
+            max-height: 400px; /* Set the maximum height for the scrollable area */
             overflow-y: auto;
             overflow-x: auto;
-            width: 300%
+            width: 200%
         }
 
         .status-pending {
@@ -65,7 +65,7 @@
 
     <div class="table-container">
         <div class="main-content">
-            <h3 class="card-title">Your Report Summary</h3>
+            <h3 class="card-title"> Your Report Summary</h3>
 
             <div class="table-content">
                 @if($userReports->count() > 0)
@@ -99,7 +99,9 @@
             <strong>Arrested Relation:</strong> {{ $report->arrested_relation }}
             <br>
        
-            <strong>Name of Victims:</strong> {{ $report->name_of_victims }}
+            <strong>Name of Victims:</strong> {{ $report->name_of_victims }} 
+            <br>
+            <strong>Name of Suspects:</strong> {{ $report->name_of_suspects }}
             <br>
        
             <strong>Bullying Type:</strong> {{ $report->bullying_type }}

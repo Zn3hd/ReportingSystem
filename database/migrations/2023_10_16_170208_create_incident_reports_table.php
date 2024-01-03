@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('suspect_charges');
             $table->text('arrested_relation');
             $table->string('name_of_victims');
+            $table->string('name_of_suspects');
             $table->string('bullying_type');
             $table->enum('result_in_injury', ['Yes', 'No']);
             $table->enum('reported_to_nurse', ['Yes', 'No']);

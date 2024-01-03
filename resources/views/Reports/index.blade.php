@@ -9,7 +9,8 @@
       overflow-x: auto;
       max-height: 700px;
       overflow-y: auto;
-      max-width: 1300px; /* Adjust the height according to your design */
+      max-width: 1000px; /* Adjust the height according to your design */
+    }
      
 </style>
 
@@ -47,12 +48,12 @@
         <h4 class="card-title">Reports</h4>
 
         <form action="{{ route('report.index') }}" method="GET" class="mb-3">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Search by name or location" value="{{ $search }}">
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </div>
-                        </form>
+    <div class="input-group">
+        <input type="text" name="search" class="form-control"
+            placeholder="Search by name or location" value="{{ isset($search) ? $search : '' }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
                         
         <div class="table-responsive">
           <table class="table table-hover">
@@ -123,7 +124,7 @@
               @endforeach
             </tbody>
           </table>
-          {{ $reports->appends(['search' => $search])->links() }}
+         
         </div>
       </div>
     </div>

@@ -1,46 +1,72 @@
-<!-- Show Profile -->
-<h1>Profile</h1>
-<p>Name: {{ $user->name }}</p>
-<!-- Edit Profile -->
-<h1>Edit Profile</h1>
-<form method="post" action="{{ route('profile.update') }}">
-    @csrf
-    @method('put')
+<!DOCTYPE html>
+<html lang="en">
 
-    <label for="name">Name:</label>
-    <input type="text" name="name" value="{{ $user->name }}" required>
+<head>
+    @include('user.UserCss')
+    <style>
+       
+    </style>
+</head>
 
-    <label for="email">Email:</label>
-<input type="email" name="email" value="{{ $user->email }}" required>
+<body>
 
-<label for="address">Address:</label>
-<input type="text" name="address" value="{{ $user->address }}" required>
+    <!-- Navbar -->
+    @include('user.UserNavbar')
 
-<label for="age">Age:</label>
-<input type="number" name="age" value="{{ $user->age }}" required>
+    <!-- Settings -->
+    @include('user.UserSettings')
 
-<label for="gender">Gender:</label>
-<select name="gender" required>
-    <option value="male" @if($user->gender == 'male') selected @endif>Male</option>
-    <option value="female" @if($user->gender == 'female') selected @endif>Female</option>
-    <!-- Add more options as needed -->
-</select>
+    <!-- Sidebar -->
+    @include('user.UserSidebar')
 
-<label for="birthday">Birthday:</label>
-<input type="date" name="birthday" value="{{ $user->birthday }}" required>
+    <!-- Main Content -->
+    <x-app-layout>
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Profile') }}
+            </h2>
+        </x-slot>
 
-<label for="university_address">University Address:</label>
-<input type="text" name="university_address" value="{{ $user->university_address }}" required>
+        <div class="max-content-width py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
+                </div>
 
-<label for="course">Course:</label>
-<input type="text" name="course" value="{{ $user->course }}" required>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-password-form')
+                    </div>
+                </div>
 
-<label for="year">Year:</label>
-<input type="text" name="year" value="{{ $user->year }}" required>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.delete-user-form')
+                    </div>
+                </div>
+            </div>
+        </div>
+    </x-app-layout>
 
-
-    <!-- Add more fields as needed -->
-
-    <button type="submit">Update Profile</button>
-</form>
-
+      <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+ 
+          <!-- partial -->
+          </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    @include('user.UserFooter')
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    @include('user.UserJs')
+    <!-- End custom js for this page-->
+  </body>
+</html>

@@ -54,7 +54,7 @@ Route::post('/Reports/{report}/mark-unsolved', [ReportController::class, 'markUn
 
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('user/UserReportForm', [HomeController::class, 'UserReportForm'])->name('user.UserReportForm');
     Route::get('/user/reportSummary', [HomeController::class, 'userReportSummary'])
@@ -66,7 +66,16 @@ Route::post('/Reports/{report}/mark-unsolved', [ReportController::class, 'markUn
     Route::get('admin/adminBody', [ReportController::class, 'overallReportSummary'])->name('admin.overallReportSummary');
     Route::get('/user/userProfile', [ProfileController::class, 'userProfile'])->name('user.userProfile');
     Route::get('/admin/overall', [ReportController::class, 'overallReportSummary'])->name('admin.overall');
-    Route::post('/handle-file-upload', 'ReportController@handleFileUpload')->name('report.handleFileUpload');
+    Route::post('/handle-file-upload', [ReportController::class, 'handleFileUpload'])->name('report.handleFileUpload');
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/admin/monthlyBullyingReport', [ReportController::class, 'monthlyBullyingReport'])->name('admin.monthlyBullyingReport');
+    Route::get('/admin/reportsTable', [ReportController::class, 'reportsTable'])->name('admin.reportsTable');
+    Route::get('/export-excel', [ReportController::class, 'exportExcel']);
+Route::get('/export-pdf', [ReportController::class, 'exportPDF']);
+
+
+
+
 
 
     

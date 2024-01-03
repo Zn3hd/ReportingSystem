@@ -7,6 +7,11 @@ use App\Models\Reports;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Exports\ReportsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ReportController extends Controller
 {
@@ -29,20 +34,23 @@ class ReportController extends Controller
     {
         $verifiedReports = Reports::where('status', 'verified')->get();
         $unverifiedReports = Reports::where('status', 'pending')->get();
-
+        
+        // Fetch monthly reports (modify the query as needed)
+        $currentMonth = now()->format('m');
+        $monthlyReports = Reports::whereMonth('created_at', $currentMonth)->get();
+    
         $reportSummary = [
             'Verified' => $verifiedReports->count(),
             'Pending' => $unverifiedReports->count(),
-            // Add more statuses as needed
         ];
-
+    
         return view('admin.dashboard', [
             'verifiedReports' => $verifiedReports,
             'unverifiedReports' => $unverifiedReports,
+            'monthlyReports' => $monthlyReports,
             'reportSummary' => $reportSummary,
         ]);
     }
-
     public function adminUserReports(User $user)
     {
         $userReports = $user->reports;
@@ -82,6 +90,7 @@ class ReportController extends Controller
         'suspect_charges' => 'required|string',
         'arrested_relation' => 'required|string',
         'name_of_victims' => 'string',
+        'name_of_suspects' => 'string',
         'bullying_type' => 'array',
         'bullying_type.*' => 'string|distinct',
         'result_in_injury' => 'in:Yes,No',
@@ -157,6 +166,7 @@ public function update(Reports $report, Request $request) {
         'suspect_charges' => 'required|string',
         'arrested_relation' => 'required|string',
         'name_of_victims' => 'string',
+        'name_of_suspects' => 'string',
         'bullying_type' => 'array',
         'bullying_type.*' => 'string|distinct',
         'result_in_injury' => 'in:Yes,No',
@@ -181,25 +191,96 @@ public function delete(Reports $report) {
     $reports = Reports::all();
     return view('reports.index', ['reports' => $reports])->with('success', 'Reports deleted successfully');
 }
-// ReportController.php
+
 
 public function overallReportSummary()
 {
     try {
-        $reportSummary = Reports::select('status', \DB::raw('count(*) as total'))
+        // Overall statistics
+        $overallSummary = Reports::select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->get();
 
-        \Log::info('Report Summary: ' . print_r($reportSummary, true));
+        // Monthly statistics
+        $currentMonth = Carbon::now()->format('m');
+        $monthlySummary = Reports::select(DB::raw('count(*) as total'))
+            ->whereMonth('created_at', $currentMonth)
+            ->groupBy('status')
+            ->get();
 
-        return view('admin.overall', ['reportSummary' => $reportSummary]);
+        // Fetch monthly reports for the last 12 months
+        $monthlyBullyingReports = [];
+        $highestReportingRate = null;
+        $highestSuspectRate = null;
+        $highestBehaviorRates = [];
+
+        for ($i = 0; $i < 12; $i++) {
+            $month = Carbon::now()->subMonths($i);
+            $monthName = $month->format('F');
+            $monthNumber = $month->format('m');
+
+            $monthlyReport = Reports::whereMonth('created_at', $monthNumber)
+                ->select(
+                    'bullying_type',
+                    'name_of_suspects',
+                    'bully_behaviors',
+                    DB::raw('count(*) as total')
+                )
+                ->groupBy('bullying_type', 'name_of_suspects', 'bully_behaviors')
+                ->orderByDesc('total')
+                ->first();
+
+            $monthlyBullyingReports[$monthName] = $monthlyReport;
+
+            // Update highest reporting rate
+            if ($monthlyReport && (!$highestReportingRate || $monthlyReport->total > $highestReportingRate->total)) {
+                $highestReportingRate = $monthlyReport;
+            }
+
+            // Update highest suspect rate
+            if ($monthlyReport && (!$highestSuspectRate || $monthlyReport->total > $highestSuspectRate->total)) {
+                $highestSuspectRate = $monthlyReport;
+            }
+
+            // Update highest behavior rates
+            if ($monthlyReport && $monthlyReport->bully_behaviors) {
+                $behaviors = explode(',', $monthlyReport->bully_behaviors);
+                foreach ($behaviors as $behavior) {
+                    if (!isset($highestBehaviorRates[$behavior]) || $monthlyReport->total > $highestBehaviorRates[$behavior]) {
+                        $highestBehaviorRates[$behavior] = $monthlyReport->total;
+                    }
+                }
+            }
+        }
+
+        // Determine the highest categories
+        $highestBullyingTypeCategory = $highestReportingRate ? $highestReportingRate->bullying_type : null;
+        $highestSuspectCategory = $highestSuspectRate ? $highestSuspectRate->name_of_suspects : null;
+        $highestBehaviorCategory = $highestBehaviorRates ? array_keys($highestBehaviorRates, max($highestBehaviorRates))[0] : null;
+
+        return view('admin.overall', [
+            'reportSummary' => $overallSummary,
+            'monthlySummary' => $monthlySummary,
+            'monthlyBullyingReports' => $monthlyBullyingReports,
+            'highestReportingRate' => $highestReportingRate,
+            'highestSuspectRate' => $highestSuspectRate,
+            'highestBehaviorRates' => $highestBehaviorRates,
+            'highestBullyingTypeCategory' => $highestBullyingTypeCategory,
+            'highestSuspectCategory' => $highestSuspectCategory,
+            'highestBehaviorCategory' => $highestBehaviorCategory,
+        ]);
     } catch (\Exception $e) {
         \Log::error('Error fetching report summary: ' . $e->getMessage());
-        return view('admin.overall', ['reportSummary' => []]);
+        return view('admin.overall', [
+            'reportSummary' => [],
+            'monthlySummary' => [],
+            'monthlyBullyingReports' => [],
+            'highestReportingRate' => null,
+            'highestSuspectRate' => null,
+            'highestBehaviorRates' => [],
+        ]);
     }
 }
-
-
 public function markSolved(Reports $report)
 {
     $report->update(['status' => 'solved']);
@@ -234,8 +315,95 @@ public function handleFileUpload(Request $request)
 
     return redirect()->back()->withErrors(['file_upload' => 'File upload failed.']);
 }
+public function monthlyBullyingReport()
+{
+    try {
+        // Fetch monthly reports for the last 12 months
+        $monthlyBullyingReports = [];
+        $highestReportingRate = null;
+        $highestSuspectRate = null;
+        $highestBehaviorRates = [];
 
+        for ($i = 0; $i < 12; $i++) {
+            $month = Carbon::now()->subMonths($i);
+            $monthName = $month->format('F');
+            $monthNumber = $month->format('m');
 
+            $monthlyReport = Reports::whereMonth('created_at', $monthNumber)
+                ->select(
+                    'bullying_type',
+                    'name_of_suspects',
+                    'bully_behaviors',
+                    \DB::raw('count(*) as total')
+                )
+                ->groupBy('bullying_type', 'name_of_suspects', 'bully_behaviors')
+                ->orderByDesc('total')
+                ->first();
+
+            $monthlyBullyingReports[$monthName] = $monthlyReport;
+
+            // Update highest reporting rate
+            if ($monthlyReport && (!$highestReportingRate || $monthlyReport->total > $highestReportingRate->total)) {
+                $highestReportingRate = $monthlyReport;
+            }
+
+            // Update highest suspect rate
+            if ($monthlyReport && (!$highestSuspectRate || $monthlyReport->total > $highestSuspectRate->total)) {
+                $highestSuspectRate = $monthlyReport;
+            }
+
+            // Update highest behavior rates
+            if ($monthlyReport && $monthlyReport->bully_behaviors) {
+                $behaviors = explode(',', $monthlyReport->bully_behaviors);
+                foreach ($behaviors as $behavior) {
+                    if (!isset($highestBehaviorRates[$behavior]) || $monthlyReport->total > $highestBehaviorRates[$behavior]) {
+                        $highestBehaviorRates[$behavior] = $monthlyReport->total;
+                    }
+                }
+            }
+        }
+
+        // Determine the highest categories
+        $highestBullyingTypeCategory = $highestReportingRate ? $highestReportingRate->bullying_type : null;
+        $highestSuspectCategory = $highestSuspectRate ? $highestSuspectRate->name_of_suspects : null;
+        $highestBehaviorCategory = $highestBehaviorRates ? array_keys($highestBehaviorRates, max($highestBehaviorRates))[0] : null;
+
+        return view('admin.monthlyBullyingReport', [
+            'monthlyBullyingReports' => $monthlyBullyingReports,
+            'highestReportingRate' => $highestReportingRate,
+            'highestSuspectRate' => $highestSuspectRate,
+            'highestBehaviorRates' => $highestBehaviorRates,
+            'highestBullyingTypeCategory' => $highestBullyingTypeCategory,
+            'highestSuspectCategory' => $highestSuspectCategory,
+            'highestBehaviorCategory' => $highestBehaviorCategory,
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Error fetching monthly bullying report: ' . $e->getMessage());
+        return view('admin.monthlyBullyingReport', [
+            'monthlyBullyingReports' => [],
+            'highestReportingRate' => null,
+            'highestSuspectRate' => null,
+            'highestBehaviorRates' => [],
+        ]);
+    }
+}
+public function reportsTable()
+{
+    // Fetch all reports for DataTable
+    $reports = Reports::all();
+
+    return view('admin.reportsTable', compact('reports'));
+}
+public function exportExcel()
+{
+    return Excel::download(new ReportsExport, 'reports.xlsx');
+}
+
+public function exportPDF()
+{
+    $pdf = PDF::loadView('your.pdf.view', ['data' => $yourData]);
+    return $pdf->download('reports.pdf');
+}
 }
 
 

@@ -1,10 +1,13 @@
 (function($) {
   'use strict';
-  $(function() {
+  $(document).ready(function() {
     // Remove pro banner on close
-    document.querySelector('#bannerClose').addEventListener('click',function() {
-      document.querySelector('#proBanner').classList.add('d-none');
-    });
+    var closeButton = document.querySelector('#bannerClose');
+    if (closeButton) {
+      closeButton.addEventListener('click', function() {
+        document.querySelector('#proBanner').classList.add('d-none');
+      });
+    }
     if ($('#circleProgress6').length) {
       var bar = new ProgressBar.Circle(circleProgress6, {
         color: '#001737',
